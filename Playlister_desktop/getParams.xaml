@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="Playlister_desktop.getParams"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="700">
+    <Grid Opacity="0.99" Background="#FF1B1919">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Rectangle HorizontalAlignment="Left" Height="114" VerticalAlignment="Top" Width="700">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFC10000" Offset="0"/>
+                    <GradientStop Color="#FF5B0000" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Label Content="Last.fm Playlister" HorizontalAlignment="Left" Height="65" Margin="171,23,0,0" VerticalAlignment="Top" Width="362" FontSize="48" FontFamily="Gisha" Foreground="#FFF3F3F3" RenderTransformOrigin="0.494,0.479"/>
+        <Button x:Name="generate" HorizontalAlignment="Left" Height="40" Margin="207,389,0,0" VerticalAlignment="Top" Width="285" FontSize="18" Click="generate_Click" Content="generate playlist"/>
+        <TextBox x:Name="songCount" HorizontalAlignment="Left" Height="31" Margin="172,163,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="63" MaxLength="3"/>
+        <Label Content="Choose" HorizontalAlignment="Left" Height="31" Margin="117,163,0,0" VerticalAlignment="Top" Width="55" Foreground="#FFF3F3F3"/>
+        <Label HorizontalAlignment="Left" Height="31" Margin="235,163,0,0" VerticalAlignment="Top" Width="77" Foreground="#FFF3F3F3" Content="songs where"/>
+        <Label Content="as playlist for" HorizontalAlignment="Left" Height="31" Margin="117,306,0,0" VerticalAlignment="Top" Width="81" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
+        <ComboBox x:Name="outType" HorizontalAlignment="Left" Height="31" Margin="203,306,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="0">
+            <ComboBoxItem Content="Last.fm"/>
+            <ComboBoxItem Content="iTunes"/>
+            <ComboBoxItem Content="Spotify"/>
+        </ComboBox>
+        <ComboBox x:Name="thisInLibrary" HorizontalAlignment="Left" Height="31" Margin="312,163,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="2">
+            <ComboBoxItem Content="artist"/>
+            <ComboBoxItem Content="album"/>
+            <ComboBoxItem Content="track"/>
+        </ComboBox>
+        <Label Content="is in " HorizontalAlignment="Left" Height="31" Margin="407,163,0,0" VerticalAlignment="Top" Width="34" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
+        <ComboBox x:Name="useLibrary" HorizontalAlignment="Left" Height="31" Margin="441,163,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="0">
+            <ComboBoxItem Content="my"/>
+            <ComboBoxItem Content="my neighbors'"/>
+        </ComboBox>
+        <Label Content="library" HorizontalAlignment="Left" Height="31" Margin="536,163,0,0" VerticalAlignment="Top" Width="47" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
+        <Label Content="having tags (separate by comma):" HorizontalAlignment="Left" Height="31" Margin="117,212,0,0" VerticalAlignment="Top" Width="195" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
+        <TextBox x:Name="hasTags" HorizontalAlignment="Left" Height="31" Margin="317,214,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" MaxLength="250"/>
+        <Label HorizontalAlignment="Left" Height="31" Margin="117,261,0,0" VerticalAlignment="Top" Width="34" Foreground="#FFF3F3F3" Content="with"/>
+        <TextBox x:Name="noScrobbles" HorizontalAlignment="Left" Height="31" Margin="251,261,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="63" MaxLength="3"/>
+        <ComboBox x:Name="comparable" HorizontalAlignment="Left" Height="31" Margin="156,261,0,0" VerticalAlignment="Top" Width="90">
+            <ComboBoxItem Content="less than"/>
+            <ComboBoxItem Content="exactly"/>
+            <ComboBoxItem Content="more than"/>
+        </ComboBox>
+        <Label HorizontalAlignment="Left" Height="31" Margin="319,261,0,0" VerticalAlignment="Top" Width="83" Foreground="#FFF3F3F3" Content="scrobbles by" RenderTransformOrigin="7,1.032"/>
+        <ComboBox x:Name="whoScrobbled" HorizontalAlignment="Left" Height="31" Margin="402,261,0,0" VerticalAlignment="Top" Width="90">
+            <ComboBoxItem Content="me"/>
+            <ComboBoxItem Content="world"/>
+        </ComboBox>
+        <Label x:Name="displayMessage" Content="" HorizontalAlignment="Left" Height="44" Margin="119,114,0,0" VerticalAlignment="Top" Width="466" FontSize="22" Foreground="#FFAA1111"/>
+        <Label Content="and call it" HorizontalAlignment="Left" Height="31" Margin="298,306,0,0" VerticalAlignment="Top" Width="64" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
+        <TextBox x:Name="playName" HorizontalAlignment="Left" Height="31" Margin="362,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" MaxLength="250" Text="(name of playlist)"/>
+
+    </Grid>
+</UserControl>
