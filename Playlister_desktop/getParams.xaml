@@ -18,44 +18,45 @@
             </Rectangle.Fill>
         </Rectangle>
         <Label Content="Last.fm Playlister" HorizontalAlignment="Left" Height="65" Margin="171,23,0,0" VerticalAlignment="Top" Width="362" FontSize="48" FontFamily="Gisha" Foreground="#FFF3F3F3" RenderTransformOrigin="0.494,0.479"/>
-        <Button x:Name="generate" HorizontalAlignment="Left" Height="40" Margin="207,389,0,0" VerticalAlignment="Top" Width="285" FontSize="18" Click="generate_Click" Content="generate playlist"/>
-        <TextBox x:Name="songCount" HorizontalAlignment="Left" Height="31" Margin="172,163,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="63" MaxLength="3"/>
-        <Label Content="Choose" HorizontalAlignment="Left" Height="31" Margin="117,163,0,0" VerticalAlignment="Top" Width="55" Foreground="#FFF3F3F3"/>
-        <Label HorizontalAlignment="Left" Height="31" Margin="235,163,0,0" VerticalAlignment="Top" Width="77" Foreground="#FFF3F3F3" Content="songs where"/>
-        <Label Content="as playlist for" HorizontalAlignment="Left" Height="31" Margin="117,306,0,0" VerticalAlignment="Top" Width="81" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
-        <ComboBox x:Name="outType" HorizontalAlignment="Left" Height="31" Margin="203,306,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="0">
+        <Label HorizontalAlignment="Left" Height="24" Margin="355,362,0,0" VerticalAlignment="Top" Width="50" Foreground="#FFF3F3F3" Content="tracks"/>
+        <Label Content="Output format:" HorizontalAlignment="Left" Height="24" Margin="212,302,0,0" VerticalAlignment="Top" Width="90" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
+        <ComboBox x:Name="outType" HorizontalAlignment="Left" Height="24" Margin="307,301,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="0">
             <ComboBoxItem Content="Last.fm"/>
             <ComboBoxItem Content="iTunes"/>
             <ComboBoxItem Content="Spotify"/>
         </ComboBox>
-        <ComboBox x:Name="thisInLibrary" HorizontalAlignment="Left" Height="31" Margin="312,163,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="2">
+        <ComboBox x:Name="thisInLibrary" HorizontalAlignment="Left" Height="24" Margin="124,167,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="2">
             <ComboBoxItem Content="artist"/>
             <ComboBoxItem Content="album"/>
             <ComboBoxItem Content="track"/>
         </ComboBox>
-        <Label Content="is in " HorizontalAlignment="Left" Height="31" Margin="407,163,0,0" VerticalAlignment="Top" Width="34" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
-        <ComboBox x:Name="useLibrary" HorizontalAlignment="Left" Height="31" Margin="441,163,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="0">
-            <ComboBoxItem Content="my"/>
-            <ComboBoxItem Content="my neighbors'"/>
+        <ComboBox x:Name="useLibrary" HorizontalAlignment="Left" Height="24" Margin="222,167,0,0" VerticalAlignment="Top" Width="56" SelectedIndex="0">
+            <ComboBoxItem Content="is"/>
+            <ComboBoxItem Content="is not"/>
         </ComboBox>
-        <Label Content="library" HorizontalAlignment="Left" Height="31" Margin="536,163,0,0" VerticalAlignment="Top" Width="47" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
-        <Label Content="having tags (separate by comma):" HorizontalAlignment="Left" Height="31" Margin="117,212,0,0" VerticalAlignment="Top" Width="195" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
-        <TextBox x:Name="hasTags" HorizontalAlignment="Left" Height="31" Margin="317,214,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" MaxLength="250"/>
-        <Label HorizontalAlignment="Left" Height="31" Margin="117,261,0,0" VerticalAlignment="Top" Width="34" Foreground="#FFF3F3F3" Content="with"/>
-        <TextBox x:Name="noScrobbles" HorizontalAlignment="Left" Height="31" Margin="251,261,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="63" MaxLength="3"/>
-        <ComboBox x:Name="comparable" HorizontalAlignment="Left" Height="31" Margin="156,261,0,0" VerticalAlignment="Top" Width="90">
+        <Label Content="in my library" HorizontalAlignment="Left" Height="24" Margin="286,165,0,0" VerticalAlignment="Top" Width="80" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
+        <Label Content="has these tags (separate by comma):" HorizontalAlignment="Left" Height="31" Margin="124,202,0,0" VerticalAlignment="Top" Width="203" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
+        <TextBox x:Name="hasTags" HorizontalAlignment="Left" Height="24" Margin="330,202,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" MaxLength="250"/>
+        <TextBox x:Name="noScrobbles" HorizontalAlignment="Left" Height="24" Margin="222,246,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="45" MaxLength="3" MaxLines="1"/>
+        <ComboBox x:Name="comparable" HorizontalAlignment="Left" Height="24" Margin="124,246,0,0" VerticalAlignment="Top" Width="90">
             <ComboBoxItem Content="less than"/>
-            <ComboBoxItem Content="exactly"/>
+            <ComboBoxItem Content="exactly" IsSelected="True"/>
             <ComboBoxItem Content="more than"/>
         </ComboBox>
-        <Label HorizontalAlignment="Left" Height="31" Margin="319,261,0,0" VerticalAlignment="Top" Width="83" Foreground="#FFF3F3F3" Content="scrobbles by" RenderTransformOrigin="7,1.032"/>
-        <ComboBox x:Name="whoScrobbled" HorizontalAlignment="Left" Height="31" Margin="402,261,0,0" VerticalAlignment="Top" Width="90">
-            <ComboBoxItem Content="me"/>
+        <Label HorizontalAlignment="Left" Height="24" Margin="272,244,0,0" VerticalAlignment="Top" Width="76" Foreground="#FFF3F3F3" Content="scrobbles by" RenderTransformOrigin="7,1.032"/>
+        <ComboBox x:Name="whoScrobbled" HorizontalAlignment="Left" Height="24" Margin="353,246,0,0" VerticalAlignment="Top" Width="68">
+            <ComboBoxItem Content="me" IsSelected="True"/>
             <ComboBoxItem Content="world"/>
         </ComboBox>
-        <Label x:Name="displayMessage" Content="" HorizontalAlignment="Left" Height="44" Margin="119,114,0,0" VerticalAlignment="Top" Width="466" FontSize="22" Foreground="#FFAA1111"/>
-        <Label Content="and call it" HorizontalAlignment="Left" Height="31" Margin="298,306,0,0" VerticalAlignment="Top" Width="64" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
-        <TextBox x:Name="playName" HorizontalAlignment="Left" Height="31" Margin="362,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" MaxLength="250" Text="(name of playlist)"/>
+        <Label Content="Name:" HorizontalAlignment="Left" Height="24" Margin="257,333,0,0" VerticalAlignment="Top" Width="45" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
+        <TextBox x:Name="playName" HorizontalAlignment="Left" Height="24" Margin="307,333,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="245" MaxLength="250" Text="(ex. my Top 50)"/>
+        <Label Content="Limit to:" HorizontalAlignment="Left" Height="24" Margin="247,362,0,0" VerticalAlignment="Top" Width="55" Foreground="#FFF3F3F3"/>
+        <Label Content="Choose your conditions:" HorizontalAlignment="Left" Height="39" Margin="43,116,0,0" VerticalAlignment="Top" Width="257" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581" FontSize="20" FontWeight="Bold"/>
+        <CheckBox x:Name="scopeCk" Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,171,0,0" Width="18"/>
+        <CheckBox x:Name="tagsCk" Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,211,0,0" Width="18" RenderTransformOrigin="0.711,3.092"/>
+        <CheckBox x:Name="scrobblesCk" Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,250,0,0" Width="18" RenderTransformOrigin="0.711,3.092"/>
+        <TextBox x:Name="songCount" HorizontalAlignment="Left" Height="24" Margin="307,365,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="48"/>
+        <Button x:Name="generate" Content="Generate Playlist" Margin="273,418,273,0" VerticalAlignment="Top" FontSize="16" FontWeight="SemiBold" Click="generate_Click"/>
 
     </Grid>
 </UserControl>

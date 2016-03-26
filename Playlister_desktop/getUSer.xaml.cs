@@ -23,6 +23,7 @@ namespace Playlister_desktop
         public getUser()
         {
             this.InitializeComponent();
+            uname.Text = Properties.Settings.Default.keyUser;
         }
 
         #region Iswitchable Members
@@ -38,18 +39,18 @@ namespace Playlister_desktop
         {
             if (uname.Text.Trim() == "")
             {
-                giveMeUser.Content = "We really need that username...";
+                MessageBox.Show("We really need that username...");
                 return;
             }
-            MainWindow.globalusr = uname.Text.Trim();
-            if (MainWindow.globalusr != Properties.Settings.Default.keyUser)
+
+            if (uname.Text.Trim() != Properties.Settings.Default.keyUser)
             {
-                Properties.Settings.Default.keyUser = MainWindow.globalusr;
+                Properties.Settings.Default.keyUser = uname.Text.Trim();
                 Properties.Settings.Default.sessionKey = "";
                 Properties.Settings.Default.Save();
             }
             Switcher.Switch(new getParams());
-            Console.WriteLine("Session User: " + MainWindow.globalusr);
+            Console.WriteLine("Session User: " + Properties.Settings.Default.keyUser);
         }
 
     }

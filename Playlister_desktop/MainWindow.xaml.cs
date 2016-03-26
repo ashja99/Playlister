@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,15 +26,6 @@ namespace Playlister_desktop
 
     public partial class MainWindow: Window
     {
-        public static string globalusr;
-        public static string apiAddr = "http://ws.audioscrobbler.com/2.0/?";
-        private static string globalkey = "d4153ce5c6605af07bf23651b14bfcc3";
-
-        public static string getSig(string core)
-        {
-            MD5 getMd5 = MD5.Create();
-            return customFunctions.GetHash(getMd5, core + "e40049bcff4ef495115924cb5a6fce76");
-        }
 
         public MainWindow()
         {
@@ -57,66 +47,33 @@ namespace Playlister_desktop
             if (s != null)
                 s.UtilizeState(state);
             else
-                throw new ArgumentException("NextPAge is not ISwitchable! "
+                throw new ArgumentException("NextPage is not ISwitchable! "
                     + nextpage.Name.ToString());
         }
 
         public static void getAuthSession()
         {
-            getAuthSession(false);
+            myLastFm.getAuthSession(false);
         }
 
-        public static void getAuthSession(bool force)
-        {
-            if (Properties.Settings.Default.sessionKey != "" && !force)
-            {
-                Console.WriteLine("Stored Key for User " + globalusr + ": " + Properties.Settings.Default.sessionKey);
-                return;
-            }
-
-            string mytok = "";
-            string sessionKey = "";
-
-            string request = apiAddr + "method=auth.getToken&api_key=" + globalkey + "&api_sig=" + getSig("api_key" + globalkey + "methodauth.getToken");
-
-            XmlDocument xDoc = myLastFm.lastFmReq(request);
-
-            XmlNodeList xnList = xDoc.SelectNodes("/lfm");
-
-            foreach (XmlNode xn in xnList)
-            {
-                mytok = xn["token"].InnerText;
-                Console.WriteLine("Token:" + mytok);
-            }
-
-            // need to wait after this somehow...
-            Process.Start("http://www.last.fm/api/auth?api_key=" + globalkey + "&token=" + mytok);
-            MessageBoxResult waiter = MessageBox.Show("Your default web brower is now launching. Please click below when you have allowed this program to modify your account (add a playlist).");
-            
-            // Do it all again for sessionKey
-
-            request = apiAddr + "method=auth.getSession&api_key=" + globalkey + "&api_sig=" + getSig("api_key" + globalkey + "methodauth.getSessiontoken" + mytok) + "&token=" + mytok;
-
-            xDoc = myLastFm.lastFmReq(request);
-
-            xnList = xDoc.SelectNodes("/lfm/session");
-
-            foreach (XmlNode xn in xnList)
-            {
-                sessionKey = xn["key"].InnerText;
-                Console.WriteLine("Key:" + sessionKey);
-            }
-
-            Properties.Settings.Default.sessionKey = sessionKey;
-            Properties.Settings.Default.Save(); //save immediately, don't wait for close
-
-        }
-
-        public static void getResults(customFunctions.myParamArray paramArray)
+        public static void getResults(helpers.myParamArray paramArray,string outType,string playName)
         {
             // get list of libraries (scope)
             // get results for each param
             // apply count limit return list of ids
+
+            if (outType == "Last.fm")
+            {
+                MainWindow.getAuthSession();
+            }
+            else if (outType == "iTunes")
+            {
+                //do things here for iTunes
+            }
+            else if (outType == "Spotify")
+            {
+                //do things here for spotify
+            }
         }
         
     }

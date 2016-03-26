@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="700">
     <Grid Opacity="0.99" Background="#FF1B1919">
-        <TextBox x:Name="uname" HorizontalAlignment="Left" Height="39" Margin="319,202,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" FontSize="16"/>
+        <TextBox x:Name="uname" HorizontalAlignment="Left" Height="24" Margin="322,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="163" FontSize="16"/>
         <Rectangle HorizontalAlignment="Left" Height="114" VerticalAlignment="Top" Width="700">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -16,9 +16,8 @@
             </Rectangle.Fill>
         </Rectangle>
         <Label Content="Last.fm Playlister" HorizontalAlignment="Left" Height="65" Margin="171,23,0,0" VerticalAlignment="Top" Width="362" FontSize="48" FontFamily="Gisha" Foreground="#FFF3F3F3" RenderTransformOrigin="0.494,0.479"/>
-        <Label Content="username" HorizontalAlignment="Left" Height="39" Margin="219,202,0,0" VerticalAlignment="Top" Width="95" Foreground="#FFF3F3F3" FontSize="18"/>
-        <Button x:Name="Submit" HorizontalAlignment="Left" Height="40" Margin="219,269,0,0" VerticalAlignment="Top" Width="285" FontSize="18" Click="Submit_Click" Content="submit"/>
-        <Label x:Name="giveMeUser" Content="" HorizontalAlignment="Left" Height="63" Margin="171,134,0,0" VerticalAlignment="Top" Width="362" Foreground="#FF8D2525" FontSize="24"/>
+        <Label Content="username" HorizontalAlignment="Left" Height="37" Margin="222,210,0,0" VerticalAlignment="Top" Width="95" Foreground="#FFF3F3F3" FontSize="18" RenderTransformOrigin="0.592,0.796"/>
+        <Button x:Name="Submit" Content="Submit" Margin="306,275,308,0" VerticalAlignment="Top" Click="Submit_Click" Height="33" FontSize="18" FontWeight="SemiBold" Foreground="#FF1B1919"/>
 
     </Grid>
 </UserControl>

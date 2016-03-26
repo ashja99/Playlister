@@ -63,7 +63,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="myLastFm.cs" />
-    <Compile Include="customFunctions.cs" />
+    <Compile Include="helpers.cs" />
     <Compile Include="getParams.xaml.cs">
       <DependentUpon>getParams.xaml</DependentUpon>
     </Compile>

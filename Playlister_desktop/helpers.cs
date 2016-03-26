@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Playlister_desktop
 {
-    public class customFunctions
+    public class helpers
     {
         public static bool isNumeric(string input)
         {
@@ -39,22 +39,45 @@ namespace Playlister_desktop
             return sBuilder.ToString();
         }
 
+        public static string getSig(string core)
+        {
+            MD5 getMd5 = MD5.Create();
+            return GetHash(getMd5, core + "e40049bcff4ef495115924cb5a6fce76");
+        }
+
         public struct myParamArray { 
 
             public string type;
-            public string scope;
+            public bool? scope;
             public string comparison;
-            public string playcount;
+            public int playcount;
             public string playedby;
             public string[] tags;
 
-            public myParamArray(string t, string s, string c, string pc, string pb, string[] ts) {
+            public myParamArray(string t, string s, string c, string pc, string pb, string[] ts, bool? useS, bool? useP, bool? useT)
+            {
                 type = t;
-                scope = s;
-                comparison = c;
-                playcount = pc;
-                playedby = pb;
-                tags = ts;
+                if (useS.HasValue && useS.Value)
+                {
+                    if (s == "is") scope = true;
+                    else scope = false;
+                }
+                else scope = null;
+                if (useP.HasValue && useP.Value)
+                {
+                    comparison = c;
+                    playcount = Int32.Parse(pc);
+                    playedby = pb;
+                }
+                else
+                {
+                    comparison = null;
+                    playcount = 0;
+                    playedby = null;
+                }
+
+                if (useT.HasValue && useT.Value) tags = ts;
+                else tags = null;
             }
 
         }

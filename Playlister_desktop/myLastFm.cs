@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,6 +21,52 @@ namespace Playlister_desktop
 {
     public static class myLastFm
     {
+        public static void getAuthSession(bool force)
+        {
+            if (Properties.Settings.Default.sessionKey != "" && !force)
+            {
+                Console.WriteLine("Stored Key for User " + Properties.Settings.Default.keyUser + ": " + Properties.Settings.Default.sessionKey);
+                return;
+            }
+
+            string mytok = "";
+            string sessionKey = "";
+
+            string request = Properties.Settings.Default.apiAddr + "method=auth.getToken&api_key=" + Properties.Settings.Default.apiKey + "&api_sig=" + helpers.getSig("api_key" + Properties.Settings.Default.apiKey + "methodauth.getToken");
+
+            XmlDocument xDoc = myLastFm.lastFmReq(request);
+
+            XmlNodeList xnList = xDoc.SelectNodes("/lfm");
+
+            foreach (XmlNode xn in xnList)
+            {
+                mytok = xn["token"].InnerText;
+                Console.WriteLine("Token:" + mytok);
+            }
+
+            // need to wait after this somehow...
+            Process.Start("http://www.last.fm/api/auth?api_key=" + Properties.Settings.Default.apiKey + "&token=" + mytok);
+            MessageBoxResult waiter = MessageBox.Show("Your default web brower is now launching. Please click below when you have allowed this program to modify your account (add a playlist).");
+
+            // Do it all again for sessionKey
+
+            request = Properties.Settings.Default.apiAddr + "method=auth.getSession&api_key=" + Properties.Settings.Default.apiKey + "&api_sig=" + helpers.getSig("api_key" + Properties.Settings.Default.apiKey + "methodauth.getSessiontoken" + mytok) + "&token=" + mytok;
+
+            xDoc = myLastFm.lastFmReq(request);
+
+            xnList = xDoc.SelectNodes("/lfm/session");
+
+            foreach (XmlNode xn in xnList)
+            {
+                sessionKey = xn["key"].InnerText;
+                Console.WriteLine("Key:" + sessionKey);
+            }
+
+            Properties.Settings.Default.sessionKey = sessionKey;
+            Properties.Settings.Default.Save(); //save immediately, don't wait for close
+
+        }
+
         public static XmlDocument lastFmReq(string reqString)
         {
             Console.WriteLine("Request String: " + reqString);
