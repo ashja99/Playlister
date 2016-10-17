@@ -16,11 +16,160 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using Newtonsoft.Json;
 
-namespace Playlister_desktop
+namespace Playlister
 {
     public static class myLastFm
     {
+        public class Streamable
+        {
+            public string text { get; set; }
+            public string fulltrack { get; set; }
+        }
+
+        public class Image
+        {
+            public string text { get; set; }
+            public string size { get; set; }
+        }
+
+        public class Artist
+        {
+            public string name { get; set; }
+            public string mbid { get; set; }
+            public string url { get; set; }
+            public string test { get; set; }
+        }
+
+        public class Album
+        {
+            public string artist { get; set; }
+            public string title { get; set; }
+            public string mbid { get; set; }
+            public string url { get; set; }
+            public List<Image> image { get; set; }
+            public Attr attr { get; set; }
+            public string text { get; set; }
+        }
+
+        public class Date
+        {
+            public string uts { get; set; }
+            public string size { get; set; }
+
+        }
+
+        public class Track
+        {
+            public string name { get; set; }
+            public string duration { get; set; }
+            public string mbid { get; set; }
+            public string url { get; set; }
+            //TODO: change how I'm deserializing so I can parse these?
+            //public string streamable { get; set; }
+            //public Streamable streamable { get; set; }
+            public int listeners { get; set; }
+            public int playcount { get; set; }
+            public Artist artist { get; set; }
+            public Album album { get; set; }
+            public Toptags toptags { get; set; }
+            public List<Image> image { get; set; }
+            public Attr attr { get; set; }
+            public Wiki wiki { get; set; }
+            public Date date { get; set; }
+        }
+
+        public class TrackComparer : IEqualityComparer<Track>
+        {
+            // Products are equal if their names and product numbers are equal.
+            public bool Equals(Track x, Track y)
+            {
+
+                //Check whether the compared objects reference the same data.
+                if (Object.ReferenceEquals(x, y)) return true;
+
+                //Check whether any of the compared objects is null.
+                if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                    return false;
+
+                //Check whether the products' properties are equal.
+                if (x.mbid == "" | y.mbid == "")
+                    return false;
+                else
+                    return x.mbid == y.mbid;
+            }
+
+            public int GetHashCode(Track song)
+            {
+                //Check whether the object is null
+                if (Object.ReferenceEquals(song, null)) return 0;
+
+                //Get hash code for the Name field if it is not null.
+                int hashMBID = song.mbid == null ? 0 : song.mbid.GetHashCode();
+
+                //Calculate the hash code for the product.
+                return hashMBID;
+            }
+
+        }
+
+        public class Tag
+        {
+            public string name { get; set; }
+            public string url { get; set; }
+        }
+
+        public class Toptags
+        {
+            public List<Tag> tag { get; set; }
+        }
+
+        public class Wiki
+        {
+            public string published { get; set; }
+            public string summary { get; set; }
+            public string content { get; set; }
+        }
+
+        public class Attr
+        {
+            public string rank { get; set; }
+            public string tag { get; set; }
+            public int page { get; set; }
+            public int perPage { get; set; }
+            public int totalPages { get; set; }
+            public int total { get; set; }
+            public string position { get; set; }
+            public string user { get; set; }
+            public string artist { get; set; }
+        }
+
+        public class Tracks 
+        {
+            public List<Track> tracks { get; set; }
+            public List<Track> track { get; set; }
+            public Attr attr { get; set; }
+
+        }
+
+        public class tracksRootObject
+        {
+            public Tracks tracks { get; set; }
+            public Tracks toptracks { get; set; }
+            public Attr attr { get; set; }
+            public Tracks artisttracks { get; set; }
+        }
+
+        public class trackRootObject
+        {
+            public Track track { get; set; }
+        }
+
+        public static string prepRequest(string request){
+            return Properties.Settings.Default.apiAddr + request + "&api_key=" + Properties.Settings.Default.apiKey;
+        }
+
         public static void getAuthSession(bool force)
         {
             if (Properties.Settings.Default.sessionKey != "" && !force)
@@ -32,9 +181,9 @@ namespace Playlister_desktop
             string mytok = "";
             string sessionKey = "";
 
-            string request = Properties.Settings.Default.apiAddr + "method=auth.getToken&api_key=" + Properties.Settings.Default.apiKey + "&api_sig=" + helpers.getSig("api_key" + Properties.Settings.Default.apiKey + "methodauth.getToken");
+            string request = prepRequest("method=auth.getToken" ) + "&api_sig=" + helpers.getSig("api_key" + Properties.Settings.Default.apiKey + "methodauth.getToken");
 
-            XmlDocument xDoc = myLastFm.lastFmReq(request);
+            XmlDocument xDoc = myLastFm.lastFmXMLReq(request);
 
             XmlNodeList xnList = xDoc.SelectNodes("/lfm");
 
@@ -50,9 +199,9 @@ namespace Playlister_desktop
 
             // Do it all again for sessionKey
 
-            request = Properties.Settings.Default.apiAddr + "method=auth.getSession&api_key=" + Properties.Settings.Default.apiKey + "&api_sig=" + helpers.getSig("api_key" + Properties.Settings.Default.apiKey + "methodauth.getSessiontoken" + mytok) + "&token=" + mytok;
+            request = prepRequest("method=auth.getSession&token=" + mytok) + "&api_sig=" + helpers.getSig("api_key" + Properties.Settings.Default.apiKey + "methodauth.getSessiontoken" + mytok);
 
-            xDoc = myLastFm.lastFmReq(request);
+            xDoc = myLastFm.lastFmXMLReq(request);
 
             xnList = xDoc.SelectNodes("/lfm/session");
 
@@ -67,7 +216,7 @@ namespace Playlister_desktop
 
         }
 
-        public static XmlDocument lastFmReq(string reqString)
+        public static XmlDocument lastFmXMLReq(string reqString)
         {
             Console.WriteLine("Request String: " + reqString);
             WebRequest lastfm = WebRequest.Create(reqString);
@@ -96,6 +245,58 @@ namespace Playlister_desktop
                 xDoc.LoadXml(apiResponse);
 
                 return xDoc;
+            }
+            catch (WebException webExcp)
+            {
+                // If you reach this point, an exception has been caught.
+                Console.WriteLine("A WebException has been caught.");
+                // Write out the WebException message.
+                Console.WriteLine(webExcp.ToString());
+                // Get the WebException status code.
+                WebExceptionStatus status = webExcp.Status;
+                // If status is WebExceptionStatus.ProtocolError, 
+                //   there has been a protocol error and a WebResponse 
+                //   should exist. Display the protocol error.
+                if (status == WebExceptionStatus.ProtocolError)
+                {
+                    Console.Write("The server returned protocol error ");
+                    // Get HttpWebResponse so that you can check the HTTP status code.
+                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+                    Console.WriteLine((int)httpResponse.StatusCode + " - "
+                       + httpResponse.StatusCode);
+                }
+
+                return null;
+            }
+
+        }
+
+        public static string lastFmJsonReq(string reqString)
+        {
+            reqString = reqString+"&format=json";
+            Console.WriteLine("Request String: " + reqString);
+            WebRequest lastfm = WebRequest.Create(reqString);
+            lastfm.Method = "GET";
+            // Get the response.
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)lastfm.GetResponse();
+                // Display the status.
+                Console.WriteLine(response.StatusDescription);
+                // Get the stream containing content returned by the server.
+                Stream dataStream = response.GetResponseStream();
+                // Open the stream using a StreamReader for easy access.
+                StreamReader reader = new StreamReader(dataStream);
+                // Read the content. 
+                string apiResponse = reader.ReadToEnd();
+                // Display the content.
+                //Console.WriteLine(apiResponse);
+                // Cleanup the streams and the response.
+                reader.Close();
+                dataStream.Close();
+                response.Close();
+
+                return apiResponse.Replace("@attr","attr").Replace("#text","text");
             }
             catch (WebException webExcp)
             {

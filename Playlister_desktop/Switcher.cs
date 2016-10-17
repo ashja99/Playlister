@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace Playlister_desktop
+namespace Playlister
 {
     public static class Switcher
     {

@@ -1,4 +1,4 @@
-﻿<Window x:Name="Playlister" x:Class="Playlister_desktop.MainWindow"
+﻿<Window x:Name="Playlister" x:Class="Playlister.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Playlister" Height="500" Width="700">

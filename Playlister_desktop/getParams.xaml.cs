@@ -14,17 +14,25 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Playlister_desktop
+namespace Playlister
 {
     /// <summary>
     /// Interaction logic for getParams.xaml
     /// </summary>
-    public partial class getParams : UserControl
+    public partial class getParams : UserControl, ISwitchable
     {
         public getParams()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+        #region Iswitchable Members
+
+        public void UtilizeState(object state)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         private void generate_Click(object sender, RoutedEventArgs e)
         {
@@ -37,12 +45,12 @@ namespace Playlister_desktop
             }
             if (!helpers.isNumeric(songCount.Text))
             {
-                MessageBox.Show( "Oh Noes! songCount is not an integer!");
+                MessageBox.Show( "Oh Noes! the track limit is not an integer!");
                 return;
             }
             else if (Int32.Parse(songCount.Text) > 500)
             {
-                MessageBox.Show("Please choose a track count less than 500!");
+                MessageBox.Show("Please choose a track limit less than 500!");
                 return;
             }
             if (!helpers.isNumeric(noScrobbles.Text))
@@ -56,8 +64,6 @@ namespace Playlister_desktop
                 return;
             }
 
-            Switcher.Switch(new Loading());
-
             char[] separator = new char[] { ',' };
             Console.WriteLine("Old Tag List: " + hasTags.Text);
             hasTags.Text = hasTags.Text.Replace(", ", ",");
@@ -70,9 +76,17 @@ namespace Playlister_desktop
             }
 
             // format params nicely and send to get qualifying song
-            helpers.myParamArray paramArray = new helpers.myParamArray(thisInLibrary.Text, useLibrary.Text, comparable.Text, noScrobbles.Text, whoScrobbled.Text, tags,scopeCk.IsChecked,scrobblesCk.IsChecked,tagsCk.IsChecked);
+            helpers.myParamArray paramArray = new helpers.myParamArray(thisInLibrary.Text, useLibrary.Text, comparable.Text, noScrobbles.Text, whoScrobbled.Text, tags, scopeCk.IsChecked, scrobblesCk.IsChecked, tagsCk.IsChecked);
 
-            MainWindow.getResults(paramArray, outType.Text,playName.Text);
+            if (paramArray.playedby == "me" & paramArray.scope == false)
+            {
+                MessageBox.Show("Scope and scrobble requirements contradict each other!");
+                return;
+            }
+
+            Switcher.Switch(new Loading());
+
+            MainWindow.generatePlaylist(paramArray, outType.Text, playName.Text, Int32.Parse(songCount.Text));
 
         }
     }

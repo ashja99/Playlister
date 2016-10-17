@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Playlister_desktop
+
+namespace Playlister
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
@@ -23,7 +25,7 @@ namespace Playlister_desktop
         public Loading()
         {
             this.InitializeComponent();
-        }
+        }  
 
         #region Iswitchable Members
 

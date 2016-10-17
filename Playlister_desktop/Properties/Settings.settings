@@ -14,5 +14,8 @@
     <Setting Name="apiKey" Type="System.String" Scope="Application">
       <Value Profile="(Default)">d4153ce5c6605af07bf23651b14bfcc3</Value>
     </Setting>
+    <Setting Name="apiSecret" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">e40049bcff4ef495115924cb5a6fce76</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

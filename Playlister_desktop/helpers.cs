@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Playlister_desktop
+namespace Playlister
 {
     public class helpers
     {
@@ -42,7 +42,7 @@ namespace Playlister_desktop
         public static string getSig(string core)
         {
             MD5 getMd5 = MD5.Create();
-            return GetHash(getMd5, core + "e40049bcff4ef495115924cb5a6fce76");
+            return GetHash(getMd5, core + Properties.Settings.Default.apiSecret);
         }
 
         public struct myParamArray { 
@@ -78,6 +78,7 @@ namespace Playlister_desktop
 
                 if (useT.HasValue && useT.Value) tags = ts;
                 else tags = null;
+
             }
 
         }

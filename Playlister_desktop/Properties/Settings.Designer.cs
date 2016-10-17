@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Playlister_desktop.Properties {
+namespace Playlister.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -62,6 +62,15 @@ namespace Playlister_desktop.Properties {
         public string apiKey {
             get {
                 return ((string)(this["apiKey"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("e40049bcff4ef495115924cb5a6fce76")]
+        public string apiSecret {
+            get {
+                return ((string)(this["apiSecret"]));
             }
         }
     }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Playlister_desktop
+namespace Playlister
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,5 +1,5 @@
 ﻿
-namespace Playlister_desktop
+namespace Playlister
 {
     public interface ISwitchable
     {
