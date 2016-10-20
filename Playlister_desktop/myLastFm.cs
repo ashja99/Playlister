@@ -94,7 +94,7 @@ namespace Playlister
                     return false;
 
                 //Check whether the products' properties are equal.
-                if (x.mbid == "" | y.mbid == "")
+                if (x.mbid == "" || y.mbid == "")
                     return false;
                 else
                     return x.mbid == y.mbid;

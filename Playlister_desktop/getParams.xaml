@@ -37,7 +37,7 @@
         <Label Content="in my library" HorizontalAlignment="Left" Height="24" Margin="286,165,0,0" VerticalAlignment="Top" Width="80" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
         <Label Content="has these tags (separate by comma):" HorizontalAlignment="Left" Height="31" Margin="124,202,0,0" VerticalAlignment="Top" Width="203" Foreground="#FFF3F3F3" RenderTransformOrigin="2.065,0.581"/>
         <TextBox x:Name="hasTags" HorizontalAlignment="Left" Height="24" Margin="330,202,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" MaxLength="250"/>
-        <TextBox x:Name="noScrobbles" HorizontalAlignment="Left" Height="24" Margin="222,246,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="45" MaxLength="3" MaxLines="1"/>
+        <TextBox x:Name="noScrobbles" HorizontalAlignment="Left" Height="24" Margin="222,246,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="45" MaxLength="7" MaxLines="1"/>
         <ComboBox x:Name="comparable" HorizontalAlignment="Left" Height="24" Margin="124,246,0,0" VerticalAlignment="Top" Width="90">
             <ComboBoxItem Content="less than"/>
             <ComboBoxItem Content="exactly" IsSelected="True"/>

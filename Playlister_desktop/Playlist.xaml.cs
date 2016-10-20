@@ -32,15 +32,16 @@ namespace Playlister
 
             if (outType == "Last.fm")
             {
-                MainWindow.getAuthSession();
+                //Last.fm got rid of playlists, soooo........
+                //MainWindow.getAuthSession();
             }
             else if (outType == "iTunes")
             {
-                //do things here for iTunes
+                //TODO
             }
             else if (outType == "Spotify")
             {
-                //do things here for spotify
+                //TODO
             }
         }
         #region Iswitchable Members

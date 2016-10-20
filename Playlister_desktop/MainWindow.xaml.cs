@@ -61,7 +61,7 @@ namespace Playlister
         {
 
             List<myLastFm.Track> playlist = new List<myLastFm.Track>(limit);
-            List<myLastFm.Track> userLibrary = new List<myLastFm.Track>(100);
+            HashSet<myLastFm.Track> userLibrary = new HashSet<myLastFm.Track>();
             myLastFm.tracksRootObject trackResults;
             string req = "";
 
@@ -92,27 +92,27 @@ namespace Playlister
                         else if (paramArray.comparison == "less than" & trackResults.toptracks.track.First().playcount < paramArray.playcount)
                         {
                             //add the entire page
-                            userLibrary.AddRange(trackResults.toptracks.track);
+                            userLibrary.UnionWith(trackResults.toptracks.track);
                         }
                         else if (paramArray.comparison == "more than" & trackResults.toptracks.track.Last().playcount > paramArray.playcount)
                         {
                             //add the entire page
-                            userLibrary.AddRange(trackResults.toptracks.track);
+                            userLibrary.UnionWith(trackResults.toptracks.track);
                         }
                         else  {
                             foreach (myLastFm.Track song in trackResults.toptracks.track)
                             {
-                                if (paramArray.comparison == "less than" & song.playcount < paramArray.playcount)
+                                if (paramArray.comparison == "less than" & song.playcount < paramArray.playcount & song.mbid != "" )
                                     userLibrary.Add(song);
-                                else if (paramArray.comparison == "more than" & song.playcount > paramArray.playcount)
+                                else if (paramArray.comparison == "more than" & song.playcount > paramArray.playcount & song.mbid != "" )
                                     userLibrary.Add(song);
-                                else if (paramArray.comparison == "exactly" & song.playcount == paramArray.playcount)
+                                else if (paramArray.comparison == "exactly" & song.playcount == paramArray.playcount & song.mbid != "" )
                                     userLibrary.Add(song);
                             }
                         }
                     }
                     else {
-                        userLibrary.AddRange(trackResults.toptracks.track);
+                        userLibrary.Union(trackResults.toptracks.track);
                     }
                     
                     page++;
@@ -121,6 +121,8 @@ namespace Playlister
                     
             }
 
+            //some tag requirements
+            //TODO
             if(paramArray.tags != null){
                 if (paramArray.scope == false)
                 {
@@ -138,60 +140,169 @@ namespace Playlister
                 }
                 
             }
-            else if (paramArray.scope != null)
+            //no tag requirements, some scope requirement, ? playcount requirements
+            else if (paramArray.scope != null) 
             {
                 if (paramArray.scope == true)
                 {
-                    //if we got here, there are no tag requirements. user playcount requirements are already taken care of. only need to consider global playcounts
+                    //no tag requirements, scope is "in", user playcounts are already taken care while populating userLibrary
                     if (paramArray.playedby == "world")
                     {
                         foreach (myLastFm.Track song in userLibrary)
                         {
-                            req = myLastFm.prepRequest("method=track.getInfo&mbid=" + song.mbid);
-                            myLastFm.trackRootObject trackInfo = JsonConvert.DeserializeObject<myLastFm.trackRootObject>(myLastFm.lastFmJsonReq(req));
-                            if (paramArray.comparison == "exactly" & trackInfo.track.playcount == paramArray.playcount)
-                                playlist.Add(song);
-                            else if (paramArray.comparison == "more than" & trackInfo.track.playcount > paramArray.playcount)
-                                playlist.Add(song);
-                            else if (paramArray.comparison == "less than" & trackInfo.track.playcount < paramArray.playcount)
-                                playlist.Add(song);
+                            if (song.mbid != "")
+                            {
+                                req = myLastFm.prepRequest("method=track.getInfo&mbid=" + song.mbid);
+                                myLastFm.trackRootObject trackInfo = JsonConvert.DeserializeObject<myLastFm.trackRootObject>(myLastFm.lastFmJsonReq(req));
+                                if (paramArray.comparison == "exactly" & trackInfo.track.playcount == paramArray.playcount)
+                                    playlist.Add(song);
+                                else if (paramArray.comparison == "more than" & trackInfo.track.playcount > paramArray.playcount)
+                                    playlist.Add(song);
+                                else if (paramArray.comparison == "less than" & trackInfo.track.playcount < paramArray.playcount)
+                                    playlist.Add(song);
 
-                            if (playlist.Count >= limit)
-                                break;
+                                if (playlist.Count >= limit)
+                                    break;
+                            }
+                            
                         }
                     }
                     else
                     {
-                        if (userLibrary.Count < limit)
-                            limit = userLibrary.Count;
+                        if (userLibrary.Count <= limit)
+                            playlist = userLibrary.ToList();
+                        else
+                        {
+                            foreach (myLastFm.Track song in userLibrary) {
+                                playlist.Add(song);
+                                if (playlist.Count == limit)
+                                    break;
+                            }
+                        }
 
-                        playlist = userLibrary.GetRange(0, limit);
+                        
                     }
                         
                 }
-                else
+                else //no tag requirements, scope is "not in"
                 {
                     int page = 1;
                     int totalPages = 1;
-                    while (totalPages >= page)
+                    while (totalPages >= page & playlist.Count < limit)
                     {
                         req = myLastFm.prepRequest("method=chart.gettoptracks&limit=500&page="+page.ToString());
                         trackResults = JsonConvert.DeserializeObject<myLastFm.tracksRootObject>(myLastFm.lastFmJsonReq(req));
-                            
+
                         totalPages = trackResults.tracks.attr.totalPages;
+
+                        if (paramArray.playedby == "world")
+                        {
+                            foreach (myLastFm.Track song in trackResults.tracks.track)
+                            {
+                                if (song.mbid != "")
+                                {
+                                    if (paramArray.comparison == "exactly" & song.playcount == paramArray.playcount & userLibrary.Contains(song) == false)
+                                        playlist.Add(song);
+                                    else if (paramArray.comparison == "more than" & song.playcount > paramArray.playcount & userLibrary.Contains(song) == false)
+                                        playlist.Add(song);
+                                    else if (paramArray.comparison == "less than" & song.playcount < paramArray.playcount & userLibrary.Contains(song) == false)
+                                        playlist.Add(song);
+
+                                    if (playlist.Count >= limit)
+                                        break;
+                                }
+                                
+                            }
+                        }
+                        else if (paramArray.playedby == "me")
+                        {
+                            //scope "not in" shouln't have user playcount requirements
+                        }
+                        else //no playcount requirements
+                        {
+                            foreach (myLastFm.Track song in trackResults.tracks.track)
+                            {
+                                if (song.mbid != "")
+                                {
+                                    if (userLibrary.Contains(song) == false)
+                                        playlist.Add(song);
+
+                                    if (playlist.Count >= limit)
+                                        break;
+                                }
+                                
+                            }
+                        }
 
                         page++;
                     }
                 }
             }
-            else if (paramArray.playedby != null)
+            //playcount requirements only
+            else if (paramArray.playedby != null) 
             {
                 if (paramArray.playedby == "me")
                 {
-                    if (userLibrary.Count < limit)
-                        limit = userLibrary.Count;
+                    if (userLibrary.Count <= limit)
+                        playlist = userLibrary.ToList();
+                    else
+                    {
+                        foreach (myLastFm.Track song in userLibrary)
+                        {
+                            playlist.Add(song);
+                            if (playlist.Count == limit)
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    int page = 1;
+                    int totalPages = 1;
+                    while (page <= totalPages & playlist.Count < limit)
+                    {
+                        req = myLastFm.prepRequest("method=chart.gettoptracks&limit=500&page=" + page.ToString());
+                        trackResults = JsonConvert.DeserializeObject<myLastFm.tracksRootObject>(myLastFm.lastFmJsonReq(req));
+                        totalPages = trackResults.toptracks.attr.totalPages;
 
-                    playlist = userLibrary.GetRange(0, limit);
+                        if (paramArray.comparison == "less than" & trackResults.toptracks.track.Last().playcount > paramArray.playcount)
+                        {
+                            ///do nothing, aka skip this page
+                        }
+                        if (paramArray.comparison == "more than" & trackResults.toptracks.track.First().playcount < paramArray.playcount)
+                        {
+                            //ya done
+                            break;
+                        }
+                        else if (paramArray.comparison == "less than" & trackResults.toptracks.track.First().playcount < paramArray.playcount)
+                        {
+                            //add the entire page
+                            playlist.AddRange(trackResults.toptracks.track);
+                        }
+                        else if (paramArray.comparison == "more than" & trackResults.toptracks.track.Last().playcount > paramArray.playcount)
+                        {
+                            //add the entire page
+                            playlist.AddRange(trackResults.toptracks.track);
+                        }
+                        else
+                        {
+                            foreach (myLastFm.Track song in trackResults.toptracks.track)
+                            {
+                                if (paramArray.comparison == "less than" & song.playcount < paramArray.playcount)
+                                    playlist.Add(song);
+                                else if (paramArray.comparison == "more than" & song.playcount > paramArray.playcount)
+                                    playlist.Add(song);
+                                else if (paramArray.comparison == "exactly" & song.playcount == paramArray.playcount)
+                                    playlist.Add(song);
+
+                                if (playlist.Count >= limit)
+                                    break;
+                            }
+                        }
+
+                        page++;
+
+                    }
                 }
 
             }
