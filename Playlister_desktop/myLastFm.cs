@@ -39,7 +39,6 @@ namespace Playlister
             public string name { get; set; }
             public string mbid { get; set; }
             public string url { get; set; }
-            public string test { get; set; }
         }
 
         public class Album
@@ -86,6 +85,9 @@ namespace Playlister
             public bool Equals(Track x, Track y)
             {
 
+                AlbumComparer albumC = new AlbumComparer();
+                ArtistComparer artistC = new ArtistComparer();
+
                 //Check whether the compared objects reference the same data.
                 if (Object.ReferenceEquals(x, y)) return true;
 
@@ -94,10 +96,13 @@ namespace Playlister
                     return false;
 
                 //Check whether the products' properties are equal.
-                if (x.mbid == "" || y.mbid == "")
-                    return false;
-                else
-                    return x.mbid == y.mbid;
+                //if (x.mbid == "" || y.mbid == "")
+                //    return false;
+                //else
+                //    return x.mbid == y.mbid;
+
+                return x.name == y.name & artistC.Equals(x.artist, y.artist) & albumC.Equals(x.album, y.album);
+
             }
 
             public int GetHashCode(Track song)
@@ -105,11 +110,116 @@ namespace Playlister
                 //Check whether the object is null
                 if (Object.ReferenceEquals(song, null)) return 0;
 
+                AlbumComparer albumC = new AlbumComparer();
+                ArtistComparer artistC = new ArtistComparer();
+
                 //Get hash code for the Name field if it is not null.
-                int hashMBID = song.mbid == null ? 0 : song.mbid.GetHashCode();
+                int hashMBID = song.name.GetHashCode() * albumC.GetHashCode(song.album) * artistC.GetHashCode(song.artist);
 
                 //Calculate the hash code for the product.
                 return hashMBID;
+            }
+
+        }
+
+        public class TagComparer : IEqualityComparer<Tag>
+        {
+            // Products are equal if their names and product numbers are equal.
+            public bool Equals(Tag x, Tag y)
+            {
+
+                //Check whether the compared objects reference the same data.
+                if (Object.ReferenceEquals(x, y)) return true;
+
+                //Check whether any of the compared objects is null.
+                if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                    return false;
+
+                //Check whether the products' properties are equal.
+                if (x.name == "" || y.name == "")
+                    return false;
+                else
+                    return x.name == y.name;
+            }
+
+            public int GetHashCode(Tag tag)
+            {
+                //Check whether the object is null
+                if (Object.ReferenceEquals(tag, null)) return 0;
+
+                //Get hash code for the Name field if it is not null.
+                int hashMBID = tag.name == null ? 0 : tag.name.GetHashCode();
+
+                //Calculate the hash code for the product.
+                return hashMBID;
+            }
+
+        }
+
+        public class ArtistComparer : IEqualityComparer<Artist>
+        {
+            // Products are equal if their names and product numbers are equal.
+            public bool Equals(Artist x, Artist y)
+            {
+
+                //Check whether the compared objects reference the same data.
+                if (Object.ReferenceEquals(x, y)) return true;
+
+                //Check whether any of the compared objects is null.
+                if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                    return false;
+
+                //Check whether the products' properties are equal.
+                if (x.name == "" || y.name == "")
+                    return false;
+                else
+                    return x.name == y.name;
+            }
+
+            public int GetHashCode(Artist artist)
+            {
+                //Check whether the object is null
+                if (Object.ReferenceEquals(artist, null)) return 0;
+
+                //Get hash code for the Name field if it is not null.
+                int hashArt = artist.name == null ? 0 : artist.name.GetHashCode();
+
+                //Calculate the hash code for the product.
+                return hashArt;
+            }
+
+        }
+
+        public class AlbumComparer : IEqualityComparer<Album>
+        {
+            // Products are equal if their names and product numbers are equal.
+            public bool Equals(Album x, Album y)
+            {
+
+                //Check whether the compared objects reference the same data.
+                if (Object.ReferenceEquals(x, y)) return true;
+
+                //Check whether any of the compared objects is null.
+                if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                    return false;
+
+                //Check whether the products' properties are equal.
+                if (x.title == "" || y.title == "")
+                    return false;
+                else
+                    return x.title == y.title & ArtistComparer.Equals(x.artist,y.artist);
+            }
+
+            public int GetHashCode(Album album)
+            {
+                //Check whether the object is null
+                if (Object.ReferenceEquals(album, null)) return 0;
+
+                //Get hash code for the Name field if it is not null.
+                int hashAlb = album.title == null ? 0 : album.title.GetHashCode();
+
+                //Calculate the hash code for the product.
+                return hashAlb;
             }
 
         }
@@ -118,6 +228,12 @@ namespace Playlister
         {
             public string name { get; set; }
             public string url { get; set; }
+
+            public Tag(string s)
+            {
+                name = s;
+            }
+
         }
 
         public class Toptags
@@ -274,7 +390,7 @@ namespace Playlister
         public static string lastFmJsonReq(string reqString)
         {
             reqString = reqString+"&format=json";
-            Console.WriteLine("Request String: " + reqString);
+            //Console.WriteLine("Request String: " + reqString);
             WebRequest lastfm = WebRequest.Create(reqString);
             lastfm.Method = "GET";
             // Get the response.
@@ -282,7 +398,7 @@ namespace Playlister
             {
                 HttpWebResponse response = (HttpWebResponse)lastfm.GetResponse();
                 // Display the status.
-                Console.WriteLine(response.StatusDescription);
+                //Console.WriteLine(response.StatusDescription);
                 // Get the stream containing content returned by the server.
                 Stream dataStream = response.GetResponseStream();
                 // Open the stream using a StreamReader for easy access.

@@ -52,7 +52,7 @@ namespace Playlister
             public string comparison;
             public int playcount;
             public string playedby;
-            public string[] tags;
+            public List<myLastFm.Tag> tags;
 
             public myParamArray(string t, string s, string c, string pc, string pb, string[] ts, bool? useS, bool? useP, bool? useT)
             {
@@ -76,7 +76,13 @@ namespace Playlister
                     playedby = null;
                 }
 
-                if (useT.HasValue && useT.Value) tags = ts;
+                if (useT.HasValue && useT.Value)
+                {
+                    tags = new List<myLastFm.Tag>();
+                    foreach (string tg in ts) {
+                        tags.Add(new myLastFm.Tag(tg));
+                    }
+                }
                 else tags = null;
 
             }

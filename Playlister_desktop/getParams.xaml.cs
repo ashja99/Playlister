@@ -48,9 +48,9 @@ namespace Playlister
                 MessageBox.Show( "Oh Noes! the track limit is not an integer!");
                 return;
             }
-            else if (Int32.Parse(songCount.Text) > 500)
+            else if (Int32.Parse(songCount.Text) > 100)
             {
-                MessageBox.Show("Please choose a track limit less than 500!");
+                MessageBox.Show("Please choose a track limit less than 100!");
                 return;
             }
             if (!helpers.isNumeric(noScrobbles.Text))
@@ -69,6 +69,7 @@ namespace Playlister
             hasTags.Text = hasTags.Text.Replace(", ", ",");
             Console.WriteLine("New Tag List: " + hasTags.Text);
             string[] tags = hasTags.Text.Split(separator);
+
 
             if (whoScrobbled.Text == "me")
             {
