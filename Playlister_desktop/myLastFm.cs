@@ -107,6 +107,13 @@ namespace Playlister
             {
                 this.name = s;
                 this.artist = new Artist(a);
+                this.getInfo();
+            }
+
+            public Track(string m)
+            {
+                this.mbid = m;
+                this.getInfo();
             }
 
             public void getInfo()
@@ -305,7 +312,7 @@ namespace Playlister
                 name = s;
             }
 
-            private string compMode = null;
+            private compare compMode = compare.none;
             private int playcount = 0;
 
             public Tag()
@@ -325,23 +332,23 @@ namespace Playlister
                 TrackResults trackResults = (TrackResults)JsonConvert.DeserializeObject<myLastFm.tracksRootObject>(myLastFm.lastFmJsonReq(req));
                 totalPages = trackResults.totalPages;
 
-                if ((compMode == "less than" | compMode == "exactly") & trackResults.tracklist.Last().playcount > playcount)
+                if ((compMode == compare.less | compMode == compare.exact) & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //skip this page
                     return addPage();
                 }
-                else if ((compMode == "more than" | compMode == "exactly") & trackResults.tracklist.First().playcount < playcount)
+                else if ((compMode == compare.greater | compMode == compare.exact) & trackResults.tracklist.First().playcount < playcount)
                 {
                     //ya done
                     return -1;
                 }
-                else if ((compMode == "less than" & trackResults.tracklist.First().playcount < playcount) | compMode == null)
+                else if ((compMode == compare.less & trackResults.tracklist.First().playcount < playcount) | compMode == null)
                 {
                     //add the entire page
                     tracklist.AddRange(trackResults.tracklist);
                     return 0;
                 }
-                else if (compMode == "more than" & trackResults.tracklist.Last().playcount > playcount)
+                else if (compMode == compare.greater & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //add the entire page
                     tracklist.AddRange(trackResults.tracklist);
@@ -351,11 +358,11 @@ namespace Playlister
                 {
                     foreach (myLastFm.Track song in trackResults.tracklist)
                     {
-                        if (compMode == "less than" & song.playcount < playcount)
+                        if (compMode == compare.less & song.playcount < playcount)
                             tracklist.Add(song);
-                        else if (compMode == "more than" & song.playcount > playcount)
+                        else if (compMode == compare.greater & song.playcount > playcount)
                             tracklist.Add(song);
-                        else if (compMode == "exactly" & song.playcount == playcount)
+                        else if (compMode == compare.exact & song.playcount == playcount)
                             tracklist.Add(song);
                     }
                     return 0;
@@ -376,23 +383,23 @@ namespace Playlister
                 TrackResults trackResults = (TrackResults)JsonConvert.DeserializeObject<myLastFm.tracksRootObject>(myLastFm.lastFmJsonReq(req));
                 totalPages = trackResults.totalPages;
 
-                if ((compMode == "less than" | compMode == "exactly") & trackResults.tracklist.Last().playcount > playcount)
+                if ((compMode == compare.less | compMode == compare.exact) & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //skip this page
                     return addPage();
                 }
-                else if ((compMode == "more than" | compMode == "exactly") & trackResults.tracklist.First().playcount < playcount)
+                else if ((compMode == compare.greater | compMode == compare.exact) & trackResults.tracklist.First().playcount < playcount)
                 {
                     //ya done
                     return -1;
                 }
-                else if ((compMode == "less than" & trackResults.tracklist.First().playcount < playcount) | compMode == null)
+                else if ((compMode == compare.less & trackResults.tracklist.First().playcount < playcount) | compMode == null)
                 {
                     //add the entire page
                     tracklist.AddRange(trackResults.tracklist);
                     return 0;
                 }
-                else if (compMode == "more than" & trackResults.tracklist.Last().playcount > playcount)
+                else if (compMode == compare.greater & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //add the entire page
                     tracklist.AddRange(trackResults.tracklist);
@@ -402,11 +409,11 @@ namespace Playlister
                 {
                     foreach (myLastFm.Track song in trackResults.tracklist)
                     {
-                        if (compMode == "less than" & song.playcount < playcount)
+                        if (compMode == compare.less & song.playcount < playcount)
                             tracklist.Add(song);
-                        else if (compMode == "more than" & song.playcount > playcount)
+                        else if (compMode == compare.greater & song.playcount > playcount)
                             tracklist.Add(song);
-                        else if (compMode == "exactly" & song.playcount == playcount)
+                        else if (compMode == compare.exact & song.playcount == playcount)
                             tracklist.Add(song);
                     }
                     return 0;
@@ -540,7 +547,7 @@ namespace Playlister
             public HashSet<Track> library { get; set; }
             private int page = 0;
             private int totalPages = 1;
-            private string compMode = null;
+            private compare compMode = compare.none;
             private int playcount = 0;
             public int perPage
             {
@@ -550,7 +557,7 @@ namespace Playlister
                 }
             }
 
-            public Chart(string param_comparison = null, int param_playcount = 0)
+            public Chart(compare param_comparison = compare.none, int param_playcount = 0)
             {
                 compMode = param_comparison;
                 playcount = param_playcount;
@@ -571,23 +578,23 @@ namespace Playlister
                 TrackResults trackResults = (TrackResults)JsonConvert.DeserializeObject<myLastFm.tracksRootObject>(myLastFm.lastFmJsonReq(req));
                 totalPages = trackResults.totalPages;
 
-                if ((compMode == "less than" | compMode == "exactly") & trackResults.tracklist.Last().playcount > playcount)
+                if ((compMode == compare.less | compMode == compare.exact) & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //skip this page
                     return addPage();
                 }
-                else if ((compMode == "more than" | compMode == "exactly") & trackResults.tracklist.First().playcount < playcount)
+                else if ((compMode == compare.greater | compMode == compare.exact) & trackResults.tracklist.First().playcount < playcount)
                 {
                     //ya done
                     return -1;
                 }
-                else if ((compMode == "less than" & trackResults.tracklist.First().playcount < playcount) | compMode == null)
+                else if ((compMode == compare.less & trackResults.tracklist.First().playcount < playcount) | compMode == null)
                 {
                     //add the entire page
                     library.UnionWith(trackResults.tracklist);
                     return 0;
                 }
-                else if (compMode == "more than" & trackResults.tracklist.Last().playcount > playcount)
+                else if (compMode == compare.greater & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //add the entire page
                     library.UnionWith(trackResults.tracklist);
@@ -597,11 +604,11 @@ namespace Playlister
                 {
                     foreach (myLastFm.Track song in trackResults.tracklist)
                     {
-                        if (compMode == "less than" & song.playcount < playcount)
+                        if (compMode == compare.less & song.playcount < playcount)
                             library.Add(song);
-                        else if (compMode == "more than" & song.playcount > playcount)
+                        else if (compMode == compare.greater & song.playcount > playcount)
                             library.Add(song);
-                        else if (compMode == "exactly" & song.playcount == playcount)
+                        else if (compMode == compare.exact & song.playcount == playcount)
                             library.Add(song);
                     }
                     return 0;
@@ -622,23 +629,23 @@ namespace Playlister
                 TrackResults trackResults = (TrackResults)JsonConvert.DeserializeObject<myLastFm.tracksRootObject>(myLastFm.lastFmJsonReq(req));
                 totalPages = trackResults.totalPages;
 
-                if ((compMode == "less than" | compMode == "exactly") & trackResults.tracklist.Last().playcount > playcount)
+                if ((compMode == compare.less | compMode == compare.exact) & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //skip this page
                     return addPage();
                 }
-                else if ((compMode == "more than" | compMode == "exactly") & trackResults.tracklist.First().playcount < playcount)
+                else if ((compMode == compare.greater | compMode == compare.exact) & trackResults.tracklist.First().playcount < playcount)
                 {
                     //ya done
                     return -1;
                 }
-                else if ((compMode == "less than" & trackResults.tracklist.First().playcount < playcount) | compMode == null)
+                else if ((compMode == compare.less & trackResults.tracklist.First().playcount < playcount) | compMode == null)
                 {
                     //add the entire page
                     library.UnionWith(trackResults.tracklist);
                     return 0;
                 }
-                else if (compMode == "more than" & trackResults.tracklist.Last().playcount > playcount)
+                else if (compMode == compare.greater & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //add the entire page
                     library.UnionWith(trackResults.tracklist);
@@ -648,11 +655,11 @@ namespace Playlister
                 {
                     foreach (myLastFm.Track song in trackResults.tracklist)
                     {
-                        if (compMode == "less than" & song.playcount < playcount)
+                        if (compMode == compare.less & song.playcount < playcount)
                             library.Add(song);
-                        else if (compMode == "more than" & song.playcount > playcount)
+                        else if (compMode == compare.greater & song.playcount > playcount)
                             library.Add(song);
-                        else if (compMode == "exactly" & song.playcount == playcount)
+                        else if (compMode == compare.exact & song.playcount == playcount)
                             library.Add(song);
                     }
                     return 0;
@@ -667,7 +674,7 @@ namespace Playlister
             public HashSet<Track> library { get; set; }
             private int page = 0;
             private int totalPages = 1;
-            private string compMode = null;
+            private compare compMode = compare.none;
             private int playcount = 0;
             public int perPage
             {
@@ -679,10 +686,15 @@ namespace Playlister
 
             private string username = Properties.Settings.Default.keyUser;
 
-            public AppUser(string param_comparison = null, int param_playcount = 0)
+            public AppUser(compare param_comparison, int param_playcount = 0)
             {
                 compMode = param_comparison;
                 playcount = param_playcount;
+                library = new HashSet<Track>();
+            }
+
+            public AppUser()
+            {
                 library = new HashSet<Track>();
             }
 
@@ -700,23 +712,23 @@ namespace Playlister
                 TrackResults trackResults = (TrackResults)JsonConvert.DeserializeObject<myLastFm.tracksRootObject>(myLastFm.lastFmJsonReq(req));
                 totalPages = trackResults.totalPages;
 
-                if ((compMode == "less than" | compMode == "exactly") & trackResults.tracklist.Last().playcount > playcount)
+                if ((compMode == compare.less | compMode == compare.exact) & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //skip this page
                     return addPage();
                 }
-                else if ((compMode == "more than" | compMode == "exactly") & trackResults.tracklist.First().playcount < playcount)
+                else if ((compMode == compare.greater | compMode == compare.exact) & trackResults.tracklist.First().playcount < playcount)
                 {
                     //ya done
                     return -1;
                 }
-                else if ((compMode == "less than" & trackResults.tracklist.First().playcount < playcount) | compMode == null)
+                else if ((compMode == compare.less & trackResults.tracklist.First().playcount < playcount) | compMode == compare.none)
                 {
                     //add the entire page
                     library.UnionWith(trackResults.tracklist);
                     return 0;
                 }
-                else if (compMode == "more than" & trackResults.tracklist.Last().playcount > playcount)
+                else if (compMode == compare.greater & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //add the entire page
                     library.UnionWith(trackResults.tracklist);
@@ -726,11 +738,11 @@ namespace Playlister
                 {
                     foreach (myLastFm.Track song in trackResults.tracklist)
                     {
-                        if (compMode == "less than" & song.playcount < playcount)
+                        if (compMode == compare.less & song.playcount < playcount)
                             library.Add(song);
-                        else if (compMode == "more than" & song.playcount > playcount)
+                        else if (compMode == compare.greater & song.playcount > playcount)
                             library.Add(song);
-                        else if (compMode == "exactly" & song.playcount == playcount)
+                        else if (compMode == compare.exact & song.playcount == playcount)
                             library.Add(song);
                     }
                     return 0;
@@ -751,23 +763,23 @@ namespace Playlister
                 TrackResults trackResults = (TrackResults)JsonConvert.DeserializeObject<myLastFm.tracksRootObject>(myLastFm.lastFmJsonReq(req));
                 totalPages = trackResults.totalPages;
 
-                if ((compMode == "less than" | compMode == "exactly") & trackResults.tracklist.Last().playcount > playcount)
+                if ((compMode == compare.less | compMode == compare.exact) & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //skip this page
                     return addPage();
                 }
-                else if ((compMode == "more than" | compMode == "exactly") & trackResults.tracklist.First().playcount < playcount)
+                else if ((compMode == compare.greater | compMode == compare.exact) & trackResults.tracklist.First().playcount < playcount)
                 {
                     //ya done
                     return -1;
                 }
-                else if ((compMode == "less than" & trackResults.tracklist.First().playcount < playcount) | compMode == null)
+                else if ((compMode == compare.less & trackResults.tracklist.First().playcount < playcount) | compMode == null)
                 {
                     //add the entire page
                     library.UnionWith(trackResults.tracklist);
                     return 0;
                 }
-                else if (compMode == "more than" & trackResults.tracklist.Last().playcount > playcount)
+                else if (compMode == compare.greater & trackResults.tracklist.Last().playcount > playcount)
                 {
                     //add the entire page
                     library.UnionWith(trackResults.tracklist);
@@ -777,11 +789,11 @@ namespace Playlister
                 {
                     foreach (myLastFm.Track song in trackResults.tracklist)
                     {
-                        if (compMode == "less than" & song.playcount < playcount)
+                        if (compMode == compare.less & song.playcount < playcount)
                             library.Add(song);
-                        else if (compMode == "more than" & song.playcount > playcount)
+                        else if (compMode == compare.greater & song.playcount > playcount)
                             library.Add(song);
-                        else if (compMode == "exactly" & song.playcount == playcount)
+                        else if (compMode == compare.exact & song.playcount == playcount)
                             library.Add(song);
                     }
                     return 0;

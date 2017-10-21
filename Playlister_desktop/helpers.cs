@@ -10,6 +10,9 @@ using System.Xml;
 
 namespace Playlister
 {
+
+    public enum compare { exact, less, greater, none}
+
     public class helpers
     {
         public static bool isNumeric(string input)
@@ -49,7 +52,7 @@ namespace Playlister
 
             public string type;
             public bool? scope;
-            public string comparison;
+            public compare compMode;
             public int playcount;
             public string playedby;
             public List<myLastFm.Tag> tags;
@@ -65,13 +68,23 @@ namespace Playlister
                 else scope = null;
                 if (useP.HasValue && useP.Value)
                 {
-                    comparison = c;
+                    this.compMode = compare.none;
+
+                    switch(c){
+                        case "exactly": this.compMode = compare.exact;
+                            break;
+                        case "less than": this.compMode = compare.less;
+                            break;
+                        case "more than": this.compMode = compare.greater;
+                            break;
+                    }
+
                     playcount = Int32.Parse(pc);
                     playedby = pb;
                 }
                 else
                 {
-                    comparison = null;
+                    compMode = compare.none;
                     playcount = 0;
                     playedby = null;
                 }

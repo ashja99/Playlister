@@ -64,21 +64,21 @@ namespace Playlister
             // If scope is relavent or plays by me is selected, might as well start by initializing the users library.
             if (paramArray.playedby == "me" | paramArray.scope != null)
             {
-                currentUser = new myLastFm.AppUser(paramArray.comparison, paramArray.playcount);
-                currentUser.addPage();
+                if (paramArray.playedby == "me")
+                {
+                    
+                }
+                else
+                {
+
+                }
+
             }
             else
-                currentUser = new myLastFm.AppUser(); ;
+                currentUser = new myLastFm.AppUser();
+            
 
             List<myLastFm.Track> playlist = new List<myLastFm.Track>(limit);
-
-            // If scope is not in user library, then we need the WHOLE user library.
-            if (paramArray.scope == false)
-            {
-                int ret = currentUser.addPage();
-                while (ret == 0)
-                    ret = currentUser.addPage();
-            }
 
             //some tag requirements
             if (paramArray.tags != null)
@@ -87,6 +87,15 @@ namespace Playlister
 
                 if (paramArray.scope == false && paramArray.playedby != "me")
                 {
+                    //need whole user library for scope = false
+                    currentUser = new myLastFm.AppUser();
+                    if (paramArray.scope == false)
+                    {
+                        int ret = currentUser.addPage();
+                        while (ret == 0)
+                            ret = currentUser.addPage();
+                    }
+
                     foreach (myLastFm.Tag tag in paramArray.tags)
                     {
                         tag.turnPage();
@@ -113,6 +122,10 @@ namespace Playlister
                 }
                 if (paramArray.scope == true | paramArray.playedby == "me")
                 {
+                    //for these, we don't necessarily need the whole library
+                    currentUser = new myLastFm.AppUser(paramArray.compMode, paramArray.playcount);
+                    currentUser.addPage();
+
                     foreach (myLastFm.Track song in currentUser.library)
                     {
 
@@ -121,17 +134,18 @@ namespace Playlister
                         {
                             if (paramArray.playedby == "me")
                             {
-                                //TODO
+                                //current song is already pulled from the user library, which is already filtered by playcount
+                                playlist.Add(song);
                             }
                             else if (paramArray.playedby == "world")
                             {
                                 song.getInfo();
 
-                                if (paramArray.comparison == "exactly" & song.playcount == paramArray.playcount)
+                                if (paramArray.compMode == compare.exact & song.playcount == paramArray.playcount)
                                     playlist.Add(song);
-                                else if (paramArray.comparison == "more than" & song.playcount > paramArray.playcount)
+                                else if (paramArray.compMode == compare.greater & song.playcount > paramArray.playcount)
                                     playlist.Add(song);
-                                else if (paramArray.comparison == "less than" & song.playcount < paramArray.playcount)
+                                else if (paramArray.compMode == compare.less & song.playcount < paramArray.playcount)
                                     playlist.Add(song);
                             }
                             else
@@ -168,21 +182,25 @@ namespace Playlister
             {
                 if (paramArray.scope == true)
                 {
+                    //for these, we don't necessarily need the whole library
+                    currentUser = new myLastFm.AppUser(paramArray.compMode, paramArray.playcount);
+                    currentUser.addPage();
+
                     //no tag requirements, scope is "in"
                     if (paramArray.playedby == "world")
                     {
-                        myLastFm.Chart Chart = new myLastFm.Chart(paramArray.comparison, paramArray.playcount);
-                        Chart.addPage();
-                        while (playlist.Count < limit & Chart.library != null)
+                        myLastFm.Chart Chart = new myLastFm.Chart(paramArray.compMode, paramArray.playcount);
+
+                        while (playlist.Count < limit & Chart.turnPage() == 0)
                         {
-                            Chart.library.Intersect(currentUser.library);
+                            Chart.library.Intersect(currentUser.library); //TODO: this check may or may not require the entire user library
                             playlist = (List<myLastFm.Track>)playlist.Union(Chart.library.ToList(), new myLastFm.TrackComparer());
                             Chart.turnPage();
                         }
                     }
                     else //user playcounts are already taken care while populating userLibrary
                     {
-                        playlist = currentUser.library.ToList();
+                        playlist = currentUser.library.ToList(); //do i need to loop this?
 
                     }
 
@@ -190,9 +208,18 @@ namespace Playlister
                 else //no tag requirements, scope is "not in"
                 {
 
+                    //need whole user library for scope = false
+                    currentUser = new myLastFm.AppUser();
+                    if (paramArray.scope == false)
+                    {
+                        int ret = currentUser.addPage();
+                        while (ret == 0)
+                            ret = currentUser.addPage();
+                    }
+
                     if (paramArray.playedby == "world")
                     {
-                        myLastFm.Chart Chart = new myLastFm.Chart(paramArray.comparison, paramArray.playcount);
+                        myLastFm.Chart Chart = new myLastFm.Chart(paramArray.compMode, paramArray.playcount);
                         Chart.addPage();
                         while (playlist.Count < limit & Chart.library != null)
                         {
@@ -227,17 +254,22 @@ namespace Playlister
             {
                 if (paramArray.playedby == "me")
                 {
+                    currentUser = new myLastFm.AppUser(paramArray.compMode, paramArray.playcount);
+
+                    while (currentUser.addPage() == 0 & currentUser.library.Count < limit)
+                    {
+                        //do nothing, while loop is already doing it
+                    }
+
                     playlist = currentUser.library.ToList();
                 }
                 else
                 {
-                    myLastFm.Chart chart = new myLastFm.Chart(paramArray.comparison, paramArray.playcount);
+                    myLastFm.Chart chart = new myLastFm.Chart(paramArray.compMode, paramArray.playcount);
 
-                    int ret = chart.addPage();
-
-                    while (ret == 0 & chart.library.Count < limit)
+                    while (chart.addPage() == 0 & chart.library.Count < limit)
                     {
-                        chart.addPage();
+                        //do nothing, while loop is already doing it
                     }
 
                     playlist = chart.library.ToList();
