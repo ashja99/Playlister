@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Playlister.myLastFm">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Playlister.myLastFm.Toptags" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Interface Name="Playlister.myLastFm.ITrackResults" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Class Name="Playlister.myLastFm.Tag" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Playlister.myLastFm.Tracks" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.TagComparer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Playlister.myLastFm.TrackResults" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Playlister.myLastFm.Wiki" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.TrackComparer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Playlister.myLastFm.Artist" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.Image" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.Attr" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.ArtistComparer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Playlister.myLastFm.Chart" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Playlister.myLastFm.tracksRootObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.Track" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.Album" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.trackRootObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.AlbumComparer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Playlister.myLastFm.Streamable" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.Date" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Playlister.myLastFm.AppUser" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>myLastFm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAIAAAAAAQAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>myLastFm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

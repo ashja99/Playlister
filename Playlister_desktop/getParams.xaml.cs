@@ -86,7 +86,6 @@ namespace Playlister
             }
 
             Switcher.Switch(new Loading());
-
             MainWindow.generatePlaylist(paramArray, outType.Text, playName.Text, Int32.Parse(songCount.Text));
 
         }
